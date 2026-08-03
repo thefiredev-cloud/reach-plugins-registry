@@ -1,0 +1,35 @@
+[
+  {
+    "id": "session-notifier",
+    "name": "Session Notifier",
+    "version": "1.0.0",
+    "description": "Desktop notification when any SSH session connects or disconnects.",
+    "author": "MeshVault",
+    "repo": "thefiredev-cloud/reach-plugins",
+    "downloadUrl": "https://github.com/thefiredev-cloud/reach-plugins/releases/download/v1.0.0/session-notifier.zip",
+    "sha256": "d366f73bc000f3dc9f74861252cc0b42620b2bea85322886dda9a2277a1c172d",
+    "permissions": ["notify"]
+  },
+  {
+    "id": "transfer-logger",
+    "name": "Transfer Logger",
+    "version": "1.0.0",
+    "description": "Notifies when SFTP uploads and downloads finish, with the file path.",
+    "author": "MeshVault",
+    "repo": "thefiredev-cloud/reach-plugins",
+    "downloadUrl": "https://github.com/thefiredev-cloud/reach-plugins/releases/download/v1.0.0/transfer-logger.zip",
+    "sha256": "d5771ea28e542d4de0d7b7b35c74d506427f7e4a7881adb62b6ac6df2fd892ae",
+    "permissions": ["notify"]
+  },
+  {
+    "id": "fleet-summary",
+    "name": "Fleet Summary",
+    "version": "1.0.0",
+    "description": "Reports how many SSH sessions are open when Reach starts, and lists their hosts.",
+    "author": "MeshVault",
+    "repo": "thefiredev-cloud/reach-plugins",
+    "downloadUrl": "https://github.com/thefiredev-cloud/reach-plugins/releases/download/v1.0.0/fleet-summary.zip",
+    "sha256": "49902dfb993cc8cb92c622b655f259b8e447d03d70f8e90e33fbdb2e2c7cad0d",
+    "permissions": ["ssh_list_connections", "notify"]
+  }
+]
