@@ -1,37 +1,25 @@
 # reach-plugins-registry
 
-Empty public JSON index that the Reach SSH client used to load marketplace plugins.
+A marketplace index (`plugins.json`) for the [Reach](https://github.com/alexandrosnt/Reach) SSH client. The index is currently empty.
 
-## Why it exists
+## What it is
 
-Reach expected a `plugins.json` registry URL. The seed listings were removed from this repo so the index would not advertise plugins that no longer live here.
+Reach's marketplace panel reads a registry URL that serves a JSON list of plugins. This repository held that list for the [thefiredev-cloud/Reach](https://github.com/thefiredev-cloud/Reach) fork. The three seed listings were removed on 2026-08-03, so `plugins.json` is now `[]`.
 
-## How to run it
+## Usage
 
-There is no application and no supported happy path.
+There is nothing to install or run. To read the index:
 
 ```bash
-git clone https://github.com/thefiredev-cloud/reach-plugins-registry.git
-cd reach-plugins-registry
-cat plugins.json
+curl -s https://raw.githubusercontent.com/thefiredev-cloud/reach-plugins-registry/main/plugins.json
 ```
 
-`plugins.json` is `[]`. Runtime: none.
-
-Plugin source and install steps are in [thefiredev-cloud/reach-plugins](https://github.com/thefiredev-cloud/reach-plugins).
-
-## In scope / out of scope
-
-**In scope:** this emptied `plugins.json` index.
-
-**Out of scope:** plugin implementations, `plugin.toml` zips, Reach itself, and any live marketplace.
-
-Files in this tree: `README.md`, `plugins.json`.
-
-## Current production URL
-
-Not deployed.
+Plugin source and manual install steps live in [reach-plugins](https://github.com/thefiredev-cloud/reach-plugins).
 
 ## Status
 
-archive
+Inactive. The empty index still returns valid JSON for any Reach install that points at it.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
