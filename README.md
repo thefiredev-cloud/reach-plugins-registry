@@ -1,24 +1,31 @@
 # reach-plugins-registry
 
-A single JSON file, `plugins.json`, that lists installable plugins for the [Reach](https://github.com/alexandrosnt/Reach) SSH client. It is for plugin authors who want to publish a plugin and for Reach users who want to point their marketplace at a custom registry.
+A single JSON file, `plugins.json`, that can serve as a plugin registry for the [Reach](https://github.com/alexandrosnt/Reach) SSH client. It is for plugin authors who want a registry to publish to and for Reach users who want to point their marketplace at a registry of their own.
 
 ## Current state
 
-The index is empty. `plugins.json` contains exactly this:
+The registry is empty and nothing points at it.
 
 ```json
 []
 ```
 
-Three seed plugins were added and then removed on 2026-08-03. Nothing is listed today, so Reach's marketplace panel shows no plugins when it reads this file. An empty array is still valid, and Reach accepts it without error.
+- `plugins.json` contains exactly the array above. Three seed plugins were added and removed on 2026-08-03.
+- Reach does not read this repository by default. Its built-in registry URL is `https://raw.githubusercontent.com/alexandrosnt/reach-plugins-registry/main/plugins.json`, the upstream author's repository. That file was also `[]` on 2026-10-10.
+- Nothing else in `thefiredev-cloud` points a Reach install here. The seed examples in [reach-plugins](https://github.com/thefiredev-cloud/reach-plugins) link to this repository only to say it is empty.
+- There is no schema file, validator, test or CI workflow.
 
-This repository has no schema file, validator, test, or CI workflow. The format below comes from the marketplace code in the [thefiredev-cloud/Reach](https://github.com/thefiredev-cloud/Reach) fork (`src-tauri/src/plugin/marketplace.rs`).
+An empty array is valid. Reach parses it without error and the Marketplace tab shows "No plugins available".
 
-## What it does
+This repository becomes useful when both of these are true: at least one entry is listed in `plugins.json`, and at least one Reach install has its registry URL set to the raw file address below. Until then it is a format reference and a template.
 
-Reach downloads the registry URL, parses the body as a JSON array, and shows each entry in the marketplace panel. When a user installs an entry, Reach downloads `downloadUrl`, checks the archive against `sha256`, and extracts it into the plugin directory. Install fails if the hash does not match.
+## How Reach uses a registry
 
-To read the index:
+Reach downloads the registry URL, parses the body as a JSON array, and lists each entry in the Marketplace tab of the Plugins panel. When a user installs an entry, Reach downloads `downloadUrl`, hashes the bytes, compares the hash to `sha256`, and only then extracts the archive into `<plugins dir>/<id>/`. The install fails if the hash is missing or does not match. Reach marks an installed plugin as updatable when the registry lists a higher `version`.
+
+The format below comes from `src-tauri/src/plugin/marketplace.rs` and `src-tauri/src/plugin/schema.rs` in the upstream Reach repository, plus the [Marketplace page](https://reachssh.com/features/marketplace/) of the Reach docs.
+
+To read this index directly:
 
 ```bash
 curl -s https://raw.githubusercontent.com/thefiredev-cloud/reach-plugins-registry/main/plugins.json
@@ -26,32 +33,35 @@ curl -s https://raw.githubusercontent.com/thefiredev-cloud/reach-plugins-registr
 
 ## Index format
 
-The file is a top-level JSON array. Each element is an object with these fields. Field names are camelCase.
+The file is a top-level JSON array. Each element is an object. Field names are camelCase.
 
 | Field | Type | Required | Meaning |
 | --- | --- | --- | --- |
-| `id` | string | yes | Plugin identifier. Used as the install directory name. Must not be empty and must not contain `/`, `\`, `.`, or a null character. |
+| `id` | string | yes | Plugin identifier and install directory name. Must not be empty and must not contain `/`, `\`, `.` or a null character. |
 | `name` | string | yes | Display name. |
-| `version` | string | yes | Plugin version, for example `1.0.0`. |
+| `version` | string | yes | Plugin version, for example `1.0.0`. Reach compares it to the installed version to offer updates. |
 | `description` | string | no | One-line summary. Defaults to an empty string. |
 | `author` | string | no | Author name. Defaults to an empty string. |
-| `repo` | string | no | GitHub `user/repo` identifier. Informational, used for the source link. |
-| `downloadUrl` | string | yes | Direct URL to the plugin release zip. Maximum archive size is 16 MiB. |
-| `sha256` | string | yes | Hex-encoded SHA-256 of the file at `downloadUrl`. Reach lowercases it before comparing. An empty value blocks the install. |
-| `permissions` | array of strings | no | Permissions the plugin manifest declares. Shown to the user before install. Defaults to an empty array. |
+| `repo` | string | no | GitHub `user/repo`. Informational, used for the source link. |
+| `keywords` | array of strings | no | Extra search terms. The search box matches them alongside name, description, author and `id`. Defaults to an empty array. |
+| `downloadUrl` | string | yes | Direct URL of the plugin release zip. Reach's docs require HTTPS. The archive may be at most 16 MiB. |
+| `sha256` | string | yes | Hex SHA-256 of the file at `downloadUrl`. Reach trims and lowercases it before comparing. An empty value blocks the install. |
+| `permissions` | array of strings | no | Permissions the plugin's manifest declares, shown to the user before install. Defaults to an empty array. |
 
-Allowed `permissions` values: `ssh_exec`, `ssh_list_connections`, `sftp_list`, `sftp_read`, `sftp_write`, `vault_read`, `vault_write`, `tunnel_manage`, `http`, `notify`, `ui`. Any other value makes the whole index fail to parse.
+Allowed `permissions` values: `ssh_exec`, `ssh_list_connections`, `sftp_list`, `sftp_read`, `sftp_write`, `vault_read`, `vault_write`, `tunnel_manage`, `http`, `notify`, `ui`. Any other value makes the whole index fail to parse, so one bad entry hides every plugin in the registry.
 
-The zip must contain `plugin.toml` at its root. Reach rejects archives that contain symbolic links or paths that escape the extraction directory.
+The zip must contain `plugin.toml` at its root. Reach rejects archives that contain symbolic links or paths that escape the extraction directory. Extraction happens in a staging directory, so a failed install does not leave a half-written plugin behind.
+
+Older Reach builds do not know `keywords`. They ignore the field, because unknown fields are not an error.
 
 ## Add an entry
 
 1. Publish your plugin as a zip with `plugin.toml` at the archive root.
-2. Compute the hash of that exact file: `sha256sum my-plugin.zip`.
-3. Add an object to the array in `plugins.json`. Keep the JSON valid.
-4. Open a pull request. Merging is how an entry is admitted, so a maintainer reviews it first.
+2. Hash that exact file: `sha256sum my-plugin.zip`.
+3. Add an object to the array in `plugins.json`.
+4. Open a pull request. A maintainer reviews it, and merging is what admits the entry.
 
-Example entry (placeholder values):
+Example entry with placeholder values:
 
 ```json
 [
@@ -62,6 +72,7 @@ Example entry (placeholder values):
     "description": "What the plugin does in one sentence.",
     "author": "Your Name",
     "repo": "your-org/your-plugin-repo",
+    "keywords": ["example"],
     "downloadUrl": "https://github.com/your-org/your-plugin-repo/releases/download/v1.0.0/my-plugin.zip",
     "sha256": "<64-character hex digest of my-plugin.zip>",
     "permissions": ["notify"]
@@ -69,19 +80,37 @@ Example entry (placeholder values):
 ]
 ```
 
-Check that the file parses before you commit:
+Check that the file is valid JSON before you commit:
 
 ```bash
 python3 -m json.tool plugins.json
+```
+
+That check does not validate field names or permission values. This one does:
+
+```bash
+python3 - <<'EOF'
+import json, re
+ALLOWED = {"ssh_exec", "ssh_list_connections", "sftp_list", "sftp_read", "sftp_write",
+           "vault_read", "vault_write", "tunnel_manage", "http", "notify", "ui"}
+for e in json.load(open("plugins.json")):
+    for k in ("id", "name", "version", "downloadUrl", "sha256"):
+        assert isinstance(e.get(k), str) and e[k].strip(), f"{e.get('id')}: missing {k}"
+    assert not re.search(r"[/\\.\0]", e["id"]), f"{e['id']}: bad id"
+    assert re.fullmatch(r"[0-9a-fA-F]{64}", e["sha256"].strip()), f"{e['id']}: sha256 is not 64 hex chars"
+    bad = set(e.get("permissions", [])) - ALLOWED
+    assert not bad, f"{e['id']}: unknown permissions {bad}"
+print("ok")
+EOF
 ```
 
 Plugin source and manual install steps live in [reach-plugins](https://github.com/thefiredev-cloud/reach-plugins).
 
 ## Point Reach at this registry
 
-Reach reads the registry from a URL stored in its settings. The built-in default in the fork source is the upstream author's registry, not this repository. To use this one, set the marketplace URL to the raw file address shown above. Reach accepts `http://` and `https://` URLs only.
+In Reach, open the Plugins panel, switch to the Marketplace tab, click the Registry button, paste the raw file address from above and click Save. The Default button restores the built-in URL. Reach accepts `http://` and `https://` addresses only. The URL survives a restart only while the vault is unlocked.
 
-## Project layout
+## Files
 
 ```
 plugins.json   the registry index
