@@ -1,0 +1,15 @@
+flowchart LR
+  author(["Plugin author"]):::actor
+  user(["Reach user"]):::actor
+  reach{{"Reach marketplace tab"}}:::ext
+  releases{{"Plugin release zip (GitHub)"}}:::ext
+  subgraph SYSTEM["reach-plugins-registry"]
+    index[("plugins.json<br/>JSON array")]:::store
+  end
+  author -->|"pull request adds entry"| index
+  reach -->|"GET raw file"| index
+  user -->|"installs from Marketplace"| reach
+  reach -->|"download + sha256 check"| releases
+  classDef actor fill:#fde68a,stroke:#b45309,color:#111827
+  classDef ext fill:#e5e7eb,stroke:#4b5563,color:#0b1220,stroke-dasharray:4 3
+  classDef store fill:#bbf7d0,stroke:#15803d,color:#0b1220

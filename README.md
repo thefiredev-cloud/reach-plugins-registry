@@ -118,6 +118,30 @@ LICENSE        MIT license text
 README.md      this file
 ```
 
+<!-- arch:begin -->
+## Architecture
+
+A one-file JSON plugin index for the Reach SSH client. It is empty today and nothing points at it.
+
+```mermaid
+flowchart LR
+  author(["Plugin author"]):::actor
+  index[("plugins.json<br/>the registry, now []")]:::store
+  reach{{"Reach<br/>Marketplace tab"}}:::ext
+  zip{{"Plugin zip<br/>downloadUrl + sha256"}}:::ext
+  user(["Reach user"]):::actor
+  author -->|"PR"| index
+  reach -->|"reads"| index
+  user -->|"installs"| reach
+  reach -->|"verifies hash"| zip
+  classDef actor fill:#fde68a,stroke:#b45309,color:#111827
+  classDef ext fill:#e5e7eb,stroke:#4b5563,color:#0b1220,stroke-dasharray:4 3
+  classDef store fill:#bbf7d0,stroke:#15803d,color:#0b1220
+```
+
+[Full architecture](docs/ARCHITECTURE.md) · Hi-res: [SVG](docs/architecture/whiteboard.svg) · [PNG 3x](docs/architecture/whiteboard@3x.png) · [dark PNG](docs/architecture/whiteboard.dark@3x.png) · [Explorable (Archify)](docs/architecture/reach-plugins-registry.archify.html) · [Graphify report](docs/architecture/graphify/GRAPH_REPORT.md)
+<!-- arch:end -->
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

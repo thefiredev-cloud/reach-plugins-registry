@@ -1,0 +1,11 @@
+flowchart LR
+  pr["Pull request"]:::doc
+  idx[("plugins.json")]:::store
+  reach{{"Reach Marketplace"}}:::ext
+  zip{{"Release zip"}}:::ext
+  pr -->|"merge"| idx
+  idx -->|"raw GET"| reach
+  zip -->|"bytes + sha256"| reach
+  classDef doc fill:#fed7aa,stroke:#c2410c,color:#0b1220
+  classDef ext fill:#e5e7eb,stroke:#4b5563,color:#0b1220,stroke-dasharray:4 3
+  classDef store fill:#bbf7d0,stroke:#15803d,color:#0b1220

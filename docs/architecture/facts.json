@@ -1,0 +1,35 @@
+{
+ "repo": "reach-plugins-registry",
+ "files_tracked": 3,
+ "head": "aafd6b5b40ecc672946b3305ab36552f82a924c2",
+ "origin": "https://github.com/thefiredev-cloud/reach-plugins-registry.git",
+ "default_branch": "main",
+ "languages": [
+  [
+   ".md",
+   1
+  ],
+  [
+   ".json",
+   1
+  ]
+ ],
+ "readme": "README.md",
+ "readme_first_paragraph": "A single JSON file, `plugins.json`, that can serve as a plugin registry for the [Reach](https://github.com/alexandrosnt/Reach) SSH client. It is for plugin authors who want a registry to publish to and for Reach users who want to point their marketplace at a registry of their own.",
+ "top_dirs": [],
+ "manifests": [],
+ "libs": [],
+ "entry_points": [],
+ "services": [],
+ "deploy_targets": [],
+ "ci_workflows": [],
+ "cron_and_timers": [],
+ "files_scanned": 1,
+ "external_hosts": [],
+ "env_var_names": [],
+ "ci_secret_names": [],
+ "data_store_signals": {},
+ "auth_signals": {},
+ "tests": [],
+ "docs_files": []
+}
