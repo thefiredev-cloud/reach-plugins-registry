@@ -1,0 +1,14 @@
+sequenceDiagram
+  autonumber
+  actor user as User
+  participant reach as Reach
+  participant idx as plugins.json (raw URL)
+  participant zip as Release zip
+  user->>reach: open Marketplace tab
+  reach->>idx: GET registry URL
+  idx-->>reach: JSON array of entries
+  user->>reach: install entry
+  reach->>zip: GET downloadUrl (16 MiB max)
+  reach->>reach: hash bytes, compare to sha256
+  Note over reach: Missing or mismatched hash blocks the install
+  reach->>reach: extract in staging dir, then to plugins/id

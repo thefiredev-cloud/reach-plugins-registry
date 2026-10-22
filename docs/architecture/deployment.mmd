@@ -1,0 +1,10 @@
+flowchart LR
+  subgraph host_gh["GitHub"]
+    raw[("raw.githubusercontent.com plugins.json<br/>on every Reach fetch")]:::store
+  end
+  subgraph host_desk["User's desktop"]
+    reach{{"Reach<br/>when Marketplace tab opens"}}:::ext
+  end
+  reach -->|"HTTPS GET"| raw
+  classDef ext fill:#e5e7eb,stroke:#4b5563,color:#0b1220,stroke-dasharray:4 3
+  classDef store fill:#bbf7d0,stroke:#15803d,color:#0b1220

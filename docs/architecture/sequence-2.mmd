@@ -1,0 +1,8 @@
+sequenceDiagram
+  autonumber
+  actor author as Author
+  participant repo as This repo
+  actor maint as Maintainer
+  author->>author: zip plugin, run sha256sum
+  author->>repo: open PR adding an object to plugins.json
+  maint->>repo: review and merge admits the entry

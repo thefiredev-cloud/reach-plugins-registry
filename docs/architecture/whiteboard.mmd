@@ -1,0 +1,13 @@
+flowchart LR
+  author(["Plugin author"]):::actor
+  index[("plugins.json<br/>the registry, now []")]:::store
+  reach{{"Reach<br/>Marketplace tab"}}:::ext
+  zip{{"Plugin zip<br/>downloadUrl + sha256"}}:::ext
+  user(["Reach user"]):::actor
+  author -->|"PR"| index
+  reach -->|"reads"| index
+  user -->|"installs"| reach
+  reach -->|"verifies hash"| zip
+  classDef actor fill:#fde68a,stroke:#b45309,color:#111827
+  classDef ext fill:#e5e7eb,stroke:#4b5563,color:#0b1220,stroke-dasharray:4 3
+  classDef store fill:#bbf7d0,stroke:#15803d,color:#0b1220
