@@ -114,7 +114,7 @@ In Reach, open the Plugins panel, switch to the Marketplace tab, click the Regis
 
 ```
 plugins.json   the registry index
-LICENSE        MIT license text
+LICENSE        license terms
 README.md      this file
 ```
 
@@ -144,4 +144,4 @@ flowchart LR
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+All rights reserved. See [LICENSE](LICENSE). Licensing questions and contact: [tanner@kodros.ai](mailto:tanner@kodros.ai).
