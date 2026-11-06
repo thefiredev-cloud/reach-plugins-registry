@@ -115,7 +115,9 @@ In Reach, open the Plugins panel, switch to the Marketplace tab, click the Regis
 ```
 plugins.json   the registry index
 LICENSE        license terms
+NOTICE         third-party notices
 README.md      this file
+docs/          architecture documentation
 ```
 
 <!-- arch:begin -->
