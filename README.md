@@ -117,6 +117,7 @@ plugins.json   the registry index
 LICENSE        license terms
 NOTICE         third-party notices
 README.md      this file
+AGENTS.md      agent instructions for this repo
 docs/          architecture documentation
 ```
 
